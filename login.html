@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <title>Form Handling</title>
+  <link rel="icon" href="baldwin four.jpg">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      height: 100vh;
+      background: linear-gradient(130deg, #ffffff, #bef4ff);
+      position: relative;
+    }
+
+    section {
+
+      background-color: white;
+      margin: 100px auto;
+      width: 350px;
+      border: 1px solid black;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+
+    }
+
+    div {
+      margin: 10px auto;
+      width: fit-content;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 11px;
+      font-weight: 100;
+      text-align: left;
+      margin: 5px 0;
+      padding-right: 5px;
+    }
+
+    input {
+      padding: 5px 0;
+    }
+
+    button {
+      background-color: rgb(0, 149, 255);
+      color: white;
+      padding: 5px 45px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      background-color: rgb(0, 123, 255);
+      box-shadow: 0 0 10px rgba(0, 149, 255, 0.6);
+    }
+
+    small {
+      color: rgb(255, 0, 0);
+      font-weight: bold;
+    }
+
+    a {
+      font-size: 12px;
+      text-align: right;
+    }
+
+    a:hover {
+      cursor: pointer;
+    }
+
+    .menu {
+      position: absolute;
+      right: 10px;
+      top: 40px;
+      width: 150px;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .menu.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu p {
+      font-size: 15px;
+      margin: 20px 0;
+    }
+
+    /* test */
+  </style>
+</head>
+
+<body id="body">
+
+  <div id="menu" class="menu bg-info">
+    <a onclick="toggleDarkMode()">
+      <p><i class="bi bi-moon m-1"></i>Dark Mode </p>
+    </a>
+    <a id="registerMenu" onclick="registerbtn()">
+      <p> <i class="bi bi-person m-1"></i>Register</p>
+    </a>
+    <a id="loginMenu" onclick="loginbtn()">
+      <p> <i class="bi bi-box-arrow-in-right m-1"></i>Login</p>
+    </a>
+  </div>
+
+  <!--heading-->
+
+  <header class="d-flex justify-content-between align-items-center p-2 bg-info text-white">
+    <h2 class="m-0">E-Commerce</h2>
+    <a onclick="menuToggle()" id="menubtn" type="button" class="text-white fs-4">
+      <i class="bi bi-three-dots-vertical"></i>
+
+    </a>
+  </header>
+
+
+  <!--login form-->
+
+  <section id="login">
+    <h1>Login</h1>
+    <div>
+      <p>Username<i class="bi bi-person-fill ms-2"></i></p>
+      <input type="text" id="name">
+    </div>
+    <div>
+      <p>Password<i class="bi bi-lock-fill ms-2"></i></p>
+      <input type="password" id="pass">
+    </div>
+    <button id="btn">SUBMIT</button><br>
+    <small id="display"></small><br>
+    <div>
+      <input type="checkbox" id="rememberMe">
+      <label for="rememberMe">Remember Me</label>
+    </div>
+
+    <a onclick="registerbtn()">create a new one?</a>
+  </section>
+
+  <!--register form-->
+
+  <section id="register">
+    <h1>Register</h1>
+    <div>
+      <p> New Username<i class="bi bi-person-fill ms-2"></i></p>
+      <input type="text" id="newName">
+    </div>
+    <div>
+      <p> Create Password<i class="bi bi-lock-fill ms-2"></i></p>
+      <input type="password" id="newPass">
+    </div>
+    <button id="Rbtn">CREATE</button><br>
+    <small id="Rdisplay"></small><br>
+    <a onclick="loginbtn()">already have a account?</a>
+  </section>
+
+  <script>
+
+    /*DOM handling*/
+
+    const body = document.getElementById("body");
+    const menu = document.getElementById("menu");
+
+    let nameinp = document.getElementById("name");
+    let passinp = document.getElementById("pass");
+    let btn = document.getElementById("btn");
+    let display = document.getElementById("display");
+    let register = document.getElementById("register");
+    let login = document.getElementById("login");
+    let menubtn = document.getElementById("menubtn");
+    let Rbtn = document.getElementById("Rbtn");
+    let Rdisplay = document.getElementById("Rdisplay");
+    let newName = document.getElementById("newName");
+    let newPass = document.getElementById("newPass");
+    let registerMenu = document.getElementById("registerMenu");
+    let loginMenu = document.getElementById("loginMenu");
+
+    /*common styling*/
+
+    register.style.display = "none";
+
+    /*common variables*/
+
+    let user = JSON.parse(localStorage.getItem("users")) || [];
+
+
+    /* 🔑 LOGIN system */
+   btn.addEventListener("click", () => {
+  const name = nameinp.value.trim();
+  const password = passinp.value.trim();
+
+  if (name === "" || password === "") {
+    display.textContent = "Name or Password cannot be empty!";
+    display.style.color = "red";
+  } else if (/\d/.test(name)) {
+    display.textContent = "Name cannot contain numbers!";
+    display.style.color = "orange";
+  } else {
+    fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, password })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          display.textContent = data.message;
+          display.style.color = "green";
+          login.style.display = "none";
+
+          // ✅ If checkbox is checked, remember user
+          if (document.getElementById("rememberMe").checked) {
+            localStorage.setItem("rememberedUser", name);
+          }
+
+        } else {
+          display.textContent = data.message;
+          display.style.color = "red";
+        }
+      })
+      .catch(err => {
+        console.error("Login error:", err);
+        display.textContent = "Server error. Try again.";
+        display.style.color = "red";
+      });
+  }
+});
+
+
+    /* 📝 REGISTER system */
+    Rbtn.addEventListener("click", () => {
+      const name = newName.value.trim();
+      const password = newPass.value.trim();
+
+      if (name === "" || password === "") {
+        Rdisplay.textContent = "Name and Password cannot be empty!";
+        Rdisplay.style.color = "red";
+      } else if (/\d/.test(name)) {
+        Rdisplay.textContent = "Name cannot contain numbers!";
+        Rdisplay.style.color = "orange";
+      } else {
+        fetch("http://localhost:3000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, password })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              Rdisplay.textContent = data.message;
+              Rdisplay.style.color = "green";
+              register.style.display = "none";
+              login.style.display = "block";
+              newName.value = "";
+              newPass.value = "";
+            } else {
+              Rdisplay.textContent = data.message;
+              Rdisplay.style.color = "crimson";
+            }
+          })
+          .catch(err => {
+            console.error("Register error:", err);
+            Rdisplay.textContent = "Server error. Try again.";
+            Rdisplay.style.color = "red";
+          });
+      }
+    });
+
+
+
+    /*button handling*/
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        if (login.style.display === "none") {
+          Rbtn.click();
+        } else {
+          btn.click();
+        }
+      }
+    });
+
+
+    /* function there*/
+
+    function menuToggle() {
+      menu.classList.toggle("show");
+      if (register.style.display === "none") {
+        loginMenu.style.display = "none";
+        registerMenu.style.display = "block"
+      } else {
+        registerMenu.style.display = "none";
+        loginMenu.style.display = "block";
+      }
+    }
+
+
+    let isDarkMode = false;
+
+    function toggleDarkMode() {
+      isDarkMode = !isDarkMode;
+
+      body.style.backgroundImage = isDarkMode ? "linear-gradient( #0f2027, #203a43, #2c5364)"
+        : "linear-gradient( #ffffff, #bef4ff)";
+      document.querySelectorAll("section").forEach(sec => {
+        sec.style.backgroundColor = isDarkMode ? "#2c5364" : "white";
+        sec.style.color = isDarkMode ? "white" : "black";
+      });
+
+      document.querySelectorAll("input").forEach(input => {
+        input.style.backgroundColor = isDarkMode ? "#0f2027" : "white";
+        input.style.color = isDarkMode ? "white" : "black";
+        input.style.border = "1px solid #ccc";
+      });
+
+      document.querySelectorAll("button").forEach(button => {
+        button.style.backgroundColor = isDarkMode ? "#007bff" : "rgb(0, 149, 255)";
+      });
+
+
+    }
+
+    /*landing page login and register*/
+
+    function registerbtn() {
+      register.style.display = "block";
+      login.style.display = "none";
+      newName.value = "";
+      newPass.value = "";
+      Rdisplay.textContent = "";
+    }
+
+    function loginbtn() {
+      register.style.display = "none";
+      login.style.display = "block";
+      nameinp.value = "";
+      passinp.value = "";
+      display.textContent = "";
+    }
+
+
+    /*basic things*/
+    window.addEventListener("load", () => {
+      const remembered = localStorage.getItem("rememberedUser");
+      if (remembered) {
+        login.style.display = "none";
+       
+      }
+    });
+
+
+    /*bending works and task there
+    1.add name already exist at register form
+    2.make realastic dark toggle mode button with changing font colors, input bars, buttons and icons 
+    */
+
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
